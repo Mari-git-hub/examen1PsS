@@ -5,12 +5,10 @@ import Link from "next/link"
 
 export default function RegisterPage() {
   const router = useRouter()
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "FREELANCER",
-  })
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [role, setRole] = useState("FREELANCER")
   const [error, setError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,7 +16,7 @@ export default function RegisterPage() {
     const res = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ name, email, password, role }),
     })
     if (!res.ok) {
       const data = await res.json()
@@ -37,33 +35,36 @@ export default function RegisterPage() {
         <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center">
           Crea tu cuenta
         </h2>
-        {error && (
-          <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
-        )}
+        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
+            type="text"
             placeholder="Nombre completo"
+            value={name}
+            onChange={e => setName(e.target.value)}
             required
             className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1A9B6C]"
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
           <input
             type="email"
             placeholder="Correo electrónico"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             required
             className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1A9B6C]"
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
           <input
             type="password"
             placeholder="Contraseña"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             required
             className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1A9B6C]"
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
           <select
+            value={role}
+            onChange={e => setRole(e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#1A9B6C]"
-            onChange={(e) => setForm({ ...form, role: e.target.value })}
           >
             <option value="FREELANCER">Soy Freelancer</option>
             <option value="CLIENT">Busco Freelancers</option>
